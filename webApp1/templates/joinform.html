@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3>회원가입</h3>
+<form action="/join" method="post" name="f">
+    <table border="1">
+        <tr><th>id</th>
+            <td>
+                <input type="text" name="id" id="id">
+                <input type="button" value="id중복체크" onclick="f1()">
+                <span id="sp1"></span>
+            </td></tr>
+        <tr><th>pwd</th><td><input type="password" name="pwd" id="pwd"></td></tr>
+        <tr><th>name</th><td><input type="text" name="name" id="name"></td></tr>
+        <tr><th>email</th><td><input type="text" name="email" id="email"></td></tr>
+        <tr><th>성별</th>
+            <td><input type="radio" name="sex" value="f" checked>여
+                <input type="radio" name="sex" value="m">남</td></tr>
+        <tr><th>취미</th>
+            <td><input type="checkbox" name="hobby"  value="h1">낚시
+                <input type="checkbox" name="hobby"  value="h2" checked>악기
+                <input type="checkbox" name="hobby"  value="h3" checked>운동
+                <input type="checkbox" name="hobby"  value="h4">게임
+            </td>
+        </tr>
+        <tr><th>학년</th><td>
+            <select name="grade">
+                <option value="1">1학년</option>
+                <option value="2">2학년</option>
+                <option value="3">3학년</option>
+                <option value="4">4학년</option>
+            </select>
+        </td></tr>
+        <tr><th>가입인사</th><td><textarea name="msg" rows="10" cols="45">안녕하세요</textarea></td></tr>
+        <tr><td colspan="2"><input type="submit" value="가입">
+            <input type="reset" value="취소"></td> </tr>
+    </table>
+</form>
+</body>
+</html>
