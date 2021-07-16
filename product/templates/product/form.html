@@ -7,16 +7,21 @@
 <body>
 <h3>제품등록</h3>
 <form action="/product/add" method="post">
-    <table border="1">
-        <tr><th>제품명</th><td><input type="text" name="name"></td></tr>
-        <tr><th>제품가격</th><td><input type="text" name="price"></td></tr>
-        <tr><th>수량</th><td><input type="text" name="amount"></td></tr>
-        <tr>
-            <th>전송</th>
-            <td colspan="2"><input type="submit" value="등록">
-            <input type="reset" value="취소"></td>
-        </tr>
-    </table>
+  <table border="1">
+    <tr>
+      <th>제품명</th><td><input type="text" name="name"></td>
+    </tr>
+    <tr>
+      <th>제품가격</th><td><input type="text" name="price"></td>
+    </tr>
+    <tr>
+      <th>제품수량</th><td><input type="text" name="amount"></td>
+    </tr>
+    <tr>
+      <th>전송</th>
+      <td><input type="submit" value="등록"><input type="reset" value="취소"></td>
+    </tr>
+  </table>
 </form>
 </body>
 </html>

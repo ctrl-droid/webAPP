@@ -3,21 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+  <script>
+    function go(){
+      location.href='/';  //페이지 이동
+    }
+  </script>
 </head>
 <body>
 <h3>수정폼</h3>
 <form action="/product/edit" method="post">
-    <table border="1">
-        <tr><th>제품번호</th><td><input type="text" name="num"></td></tr>
-        <tr><th>제품명</th><td><input type="text" name="name"></td></tr>
-        <tr><th>제품가격</th><td><input type="text" name="price"></td></tr>
-        <tr><th>수량</th><td><input type="text" name="amount"></td></tr>
-        <tr>
-            <th>전송</th>
-            <td colspan="2"><input type="submit" value="등록">
-            <input type="reset" value="취소"></td>
-        </tr>
-    </table>
+  <table border="1">
+    <tr>
+      <th>제품번호</th><td><input type="text" name="num" value="{{prod.num}}" readonly></td>
+    </tr>
+    <tr>
+      <th>제품명</th><td><input type="text" name="name" value="{{prod.name}}" readonly></td>
+    </tr>
+    <tr>
+      <th>제품가격</th><td><input type="text" name="price" value="{{prod.price}}" ></td>
+    </tr>
+    <tr>
+      <th>제품수량</th><td><input type="text" name="amount" value="{{prod.amount}}"></td>
+    </tr>
+    <tr>
+      <th>edit</th>
+      <td><input type="submit" value="수정"><input type="button" value="go index" onclick="go()"></td>
+    </tr>
+  </table>
 </form>
 </body>
 </html>

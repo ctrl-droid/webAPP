@@ -7,12 +7,14 @@
 <body>
 <h3>제품목록</h3>
 <table border="1">
-    <tr><th>번호</th><th>이름</th><th>가격</th><th>수량</th>
-       {% for p in prods %}
-    <tr>
-        <td>{{p.num}}</td><td>{{p.name}}</td>
-        <td>{{p.price}}</td><td>{{p.amount}}</td>
-    </tr>
+  <tr><th>번호</th><th>이름</th><th>가격</th><th>수량</th></tr>
+{% for p in prods %}
+  <tr>
+    <td>{{p.num}}</td>
+      <td><a href="/product/edit?num={{p.num}}">{{p.name}}</a></td>
+    <td>{{p.price}}</td>
+    <td>{{p.amount}}</td>
+  </tr>
 {% endfor %}
 </table>
 </body>
