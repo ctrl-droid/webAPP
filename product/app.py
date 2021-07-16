@@ -1,22 +1,55 @@
 from flask import Flask, render_template, request
-import vo
+import vo, model
 
 app = Flask(__name__)
+prod_service = model.ProductService()  #서비스 객체 생성
 
-@app.route('/add')
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/product/add')
 def add_form():
-    return render_template('add.html')
+    return render_template('product/form.html')
 
-@app.route('/add', methods=['POST'])
+@app.route('/product/add', methods=['POST'])
 def add():
-    num = request.form["num"]
-    name = request.form["name"]
-    price = request.form["price"]
-    amount = request.form["amount"]
+    name = request.form.get('name', '', str)
+    price = request.form.get('price', 0, int)
+    amount = request.form.get('amount', 0, int)
 
-    pd = vo.Product(num, name, price, amount)
-    return render_template('add_result.html', pd=pd)
+    prod = vo.Product(name=name, price=price, amount=amount)
+    prod_service.addProduct(prod)  #서비스의 등록 함수 호출
+    return render_template('product/detail.html', prod=prod)
 
+@app.route('/product/get', methods=['POST'])
+def get():
+    num = request.form.get('num', 0, int)
+    prod = prod_service.getProduct(num)
+    if prod == None:
+        return '제품 번호를 입력하시오'
+    else:
+        return render_template('product/detail.html', prod=prod)
+
+@app.route('/product/list')
+def list():
+    prods = prod_service.getAll()
+    for p in prods:
+        print(p)
+    return render_template('product/list.html', prods=prods)
+
+@app.route('/product/edit')   #수정폼
+def edit_form():
+    num = request.args.get('num', 0, int)
+    prod = prod_service.getProduct(num)
+    if prod == None:
+        return '없는 제품 번호'
+    else:
+        return render_template('product/edit_form.html', prod=prod)
+
+@app.route('/product/edit', methods=['POST'])   #수정완료
+def edit():
+    return '준비중'
 
 if __name__ == '__main__':
     app.run()
