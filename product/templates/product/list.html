@@ -3,17 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script>
+        function del(num){
+            location.href='/product/del?num='+num
+        }
+    </script>
 </head>
 <body>
 <h3>제품목록</h3>
 <table border="1">
-  <tr><th>번호</th><th>이름</th><th>가격</th><th>수량</th></tr>
+  <tr><th>번호</th><th>이름</th><th>가격</th><th>수량</th><th>삭제</th></tr>
 {% for p in prods %}
   <tr>
-    <td>{{p.num}}</td>
-      <td><a href="/product/edit?num={{p.num}}">{{p.name}}</a></td>
+    <td><a href="/product/detail?num={{p.num}}">{{p.num}}</a></td>
+    <td>{{p.name}}</td>
     <td>{{p.price}}</td>
     <td>{{p.amount}}</td>
+    <td><input type="button" value="삭제" onclick="del({{p.num}})"> </td>
   </tr>
 {% endfor %}
 </table>

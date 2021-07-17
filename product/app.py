@@ -46,11 +46,28 @@ def edit_form():
 
 @app.route('/product/edit', methods=['POST']) #수정완료
 def edit():
-    return '준비중'
+    num = request.form.get('num', 0, int)
+    price = request.form.get('price', 0, int)
+    amount = request.form.get('amount', 0, int)
+    prod = vo.Product(num=num, price=price, amount=amount)
+    prod_service.editProduct(prod)
+    return render_template('index.html')
 
+@app.route('/product/del')
+def delete():
+    num = request.args.get('num', 0, int)
+    prod = prod_service.delProduct(num)
+    return render_template('index.html')
 
-
+@app.route('/product/detail')
+def get_num():
+    num = request.args.get('num', 0, int)
+    prod = prod_service.getProduct(num)
+    if prod==None:
+        return '없는 제품 번호'
+    else:
+        return render_template('product/detail.html', prod=prod)
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

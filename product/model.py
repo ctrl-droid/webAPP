@@ -52,6 +52,14 @@ class ProductDao:
         self.conn.commit()  # insert, update, delete 문장 실행 시 호출
         self.disconnect()
 
+    def delete(self, num):
+        self.connect()  # db 연결
+        cur = self.conn.cursor()  # 사용할 커서 객체 생성
+        sql = "delete from product where num=%s"  # 변수가 들어갈 위치에 %s와 같은 포맷문자 지정
+        vals = (num,)
+        cur.execute(sql, vals)  # sql 실행
+        self.conn.commit()  # insert, update, delete 문장 실행 시 호출
+        self.disconnect()
 
 
 
@@ -70,3 +78,6 @@ class ProductService:  #기능 정의
 
     def editProduct(self, prod):
         self.dao.update(prod)
+
+    def delProduct(self, num):
+        return self.dao.delete(num)
