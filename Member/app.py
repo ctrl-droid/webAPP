@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import vo, model
+import model
 
 app = Flask(__name__)
 mem_service = model.MemService()

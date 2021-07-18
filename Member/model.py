@@ -1,12 +1,4 @@
 import pymysql
-
-class MemberVo:
-    def __init__(self, id=None, pwd=None, name=None, email=None):
-        self.id = id
-        self.pwd = pwd
-        self.name = name
-        self.email = email
-
 '''
 기능
 회원추가
@@ -15,6 +7,13 @@ class MemberVo:
 회원정보 수정 => id로 검색해서 새 pwd수정
 회원삭제 =>id로 회원삭제
 '''
+
+class MemberVo:
+    def __init__(self, id=None, pwd=None, name=None, email=None):
+        self.id = id
+        self.pwd = pwd
+        self.name = name
+        self.email = email
 
 class MemDao:
     def __init__(self):
