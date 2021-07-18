@@ -29,7 +29,7 @@ class MemDao:
     def insert(self, mem):
         self.connect() #db 연결
         cur = self.conn.cursor()  #사용할 커서 객체 생성
-        sql = "insert into member(id,pwd,name,eamil) values(%s, %s, %s, %s)"
+        sql = "insert into member(id,pwd,name,email) values(%s, %s, %s, %s)"
         vals = (mem.id, mem.pwd, mem.name, mem.email)
         cur.execute(sql, vals)  #sql 실행
         self.conn.commit()  #insert, update, delete 문장 실행 시 호출
@@ -38,7 +38,7 @@ class MemDao:
     def select(self, id):
         self.connect()
         cur = self.conn.cursor()
-        sql = "select * from product where id=%s"   #변수가 들어갈 위치에 %s와 같은 포맷문자 지정
+        sql = "select * from member where id=%s"   #변수가 들어갈 위치에 %s와 같은 포맷문자 지정
         vals = (id,)
         cur.execute(sql, vals)  #sql 실행. 검색한 결과 cur에 담음.
         row = cur.fetchone() #커서에서 검색된 한 줄을 꺼내어 row담음.
@@ -89,7 +89,7 @@ class MemService:
     def getAll(self):
         return self.dao.selectAll()
 
-    def editMem(self, id):
+    def editMem(self, new_pwd, id):
         self.dao.update(new_pwd, id)
 
     def delMem(self, id):

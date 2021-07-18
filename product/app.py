@@ -57,10 +57,10 @@ def edit():
 def delete():
     num = request.args.get('num', 0, int)
     prod = prod_service.delProduct(num)
-    return render_template('index.html')
+    return render_template('product/list.html')
 
 @app.route('/product/detail')
-def get_num():
+def del_num():
     num = request.args.get('num', 0, int)
     prod = prod_service.getProduct(num)
     if prod==None:

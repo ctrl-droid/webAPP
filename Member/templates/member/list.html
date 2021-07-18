@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3>회원목록</h3>
+<table border="1">
+  <tr><th>ID</th><th>비밀번호</th><th>이름</th><th>Email</th></tr>
+{% for m in mems %}
+  <tr>
+    <td>{{m.id}}</td>
+    <td>{{m.pwd}}</td>
+    <td>{{m.name}}</td>
+    <td>{{m.email}}</td>
+      <td><a href="/Member/edit?id={{m.id}}"><input type="button" value="수정"></a></td>
+    <td><a href="/Member/del?id={{m.id}}"><input type="button" value="삭제"></a></td>
+  </tr>
+{% endfor %}
+</table>
+</body>
+</html>
