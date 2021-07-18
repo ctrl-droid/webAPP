@@ -16,7 +16,7 @@
 {% for p in prods %}
   <tr>
     <td><a href="/product/detail?num={{p.num}}">{{p.num}}</a></td>
-    <td>{{p.name}}</td>
+    <td><a href="/product/edit?num={{p.num}}">{{p.name}}</a></td>
     <td>{{p.price}}</td>
     <td>{{p.amount}}</td>
     <td><input type="button" value="삭제" onclick="del({{p.num}})"> </td>
