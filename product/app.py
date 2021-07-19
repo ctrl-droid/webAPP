@@ -56,7 +56,7 @@ def edit():
 @app.route('/product/del')
 def delete():
     num = request.args.get('num', 0, int)
-    prod = prod_service.delProduct(num)
+    prod_service.delProduct(num)
     return render_template('product/list.html')
 
 @app.route('/product/detail')

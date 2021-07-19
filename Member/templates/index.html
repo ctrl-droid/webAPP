@@ -6,11 +6,15 @@
 </head>
 <body>
 <h3>회원관리</h3>
+<h4>메뉴</h4>
+<ul>
 <a href="/Member/add">회원등록</a><br/>
-<a href="/Member/list">회원목록</a><br/>
-<form action="/Member/get" method="post">
+<a href="/Member/login">로그인</a><br>
+<a href="/Member/list">전체회원목록</a><br/>
+</ul>
+    <form action="/Member/get" method="post">
     검색할 회원 ID: <input type="text" name="id">
     <input type="submit" value="검색">
-</form>
+    </form>
 </body>
 </html>

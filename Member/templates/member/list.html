@@ -3,6 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+  <script>
+    function del(id){
+      location.href = "/Member/del?id="+id
+    }
+
+    function edit(id){
+      location.href = "/Member/edit?id="+id
+    }
+
+
+  </script>
 </head>
 <body>
 <h3>회원목록</h3>
@@ -10,12 +21,12 @@
   <tr><th>ID</th><th>비밀번호</th><th>이름</th><th>Email</th></tr>
 {% for m in mems %}
   <tr>
-    <td>{{m.id}}</td>
+    <td><a href="/Member/edit?id={{m.id}}">{{m.id}}</a></td>
     <td>{{m.pwd}}</td>
     <td>{{m.name}}</td>
     <td>{{m.email}}</td>
-      <td><a href="/Member/edit?id={{m.id}}"><input type="button" value="수정"></a></td>
-    <td><a href="/Member/del?id={{m.id}}"><input type="button" value="삭제"></a></td>
+      <td><input type="button" value="수정" onclick="edit('{{m.id}}')"></td>
+    <td><input type="button" value="삭제" onclick="del('{{m.id}}')"></td>
   </tr>
 {% endfor %}
 </table>
