@@ -37,7 +37,8 @@ def login():
 @app.route('/Member/logout')
 def logout():
     if 'id' in session:  #세션에서 id라는 키가 있냐?
-        session.pop('id', None)   #세션에서 id키 삭제제    return redirect('/')
+        session.pop('id', None)   #세션에서 id키 삭제제
+    return redirect('/')
 
 @app.route('/Member/add')
 def add_form():

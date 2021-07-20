@@ -10,13 +10,13 @@
 <ul>
     <li><a href="/Member/add">회원가입</a></li>
     {% if 'id' in session %}
-    <li>>{{session.id}}님{{msg}}<a href="/Member/logout">로그아웃</a</li>
+    <li>{{session.id}}님 {{msg}}<a href="/Member/logout">로그아웃</a</li>
     {% else %}
-    <li><a href="/Member/login">로그인</a>{{session.id}}님{{msg}}</li>
-    <% endif %>
+     <li><a href="/Member/login">로그인</a></li>
+    {% endif %}
     <li><a href="/Member/list">전체회원목록</a></li>
     <li>게시판</li>
-    <li>이미지게시만</li>
+    <li>이미지게시판</li>
 </ul>
     <form action="/Member/get" method="post">
     검색할 회원 ID: <input type="text" name="id">
