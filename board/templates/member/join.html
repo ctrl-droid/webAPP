@@ -2,29 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>회원가입</title>
+    <title>Title</title>
 </head>
 <body>
-<h3>회원등록</h3>
-<form action="/Member/add" method="post">
-  <table border="1">
-    <tr>
-      <th>ID</th><td><input type="text" name="id"></td>
-    </tr>
-    <tr>
-      <th>비밀번호</th><td><input type="password" name="pwd"></td>
-    </tr>
-    <tr>
-      <th>이름</th><td><input type="text" name="name"></td>
-    </tr>
-    <tr>
-      <th>Email</th><td><input type="text" name="email"></td>
-    </tr>
-    <tr>
-      <th>전송</th>
-      <td><input type="submit" value="등록"><input type="reset" value="취소"></td>
-    </tr>
-  </table>
+<h3>회원가입</h3>
+<form action="/member/join" method="post">
+    <table border="1">
+        <tr><th>id</th><td><input type="text" name="id"></td></tr>
+        <tr><th>pwd</th><td><input type="password" name="pwd"></td></tr>
+        <tr><th>name</th><td><input type="text" name="name"></td></tr>
+        <tr><th>email</th><td><input type="text" name="email"></td></tr>
+        <tr><td colspan="2"> <input type="submit" value="가입"> </td></tr>
+    </table>
 </form>
 </body>
 </html>

@@ -6,15 +6,15 @@
 </head>
 <body>
 <h3>encore board</h3>
+
 <ul>
   {% if 'id' in session %}
   <li>{{session.id}} <a href="/member/logout">로그아웃</a></li>
   <li><a href="/member/getmember">내정보확인</a></li>
-  <li>게시판</li>
+  <li><a href="/board/list">게시판</a></li>
   {% else %}
   <li><a href="/member/login">로그인</a></li>
   {% endif %}
-
 </ul>
 </body>
 </html>

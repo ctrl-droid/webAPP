@@ -6,13 +6,12 @@
 </head>
 <body>
 <h3>글목록</h3>
-<a href="/board/add">글작성</a><br>
+<a href="/board/add">글작성</a><br/>
 <table border="1">
-  <tr><th>num</th><th>title</th><th>writer</th></tr>
-  {% for b in boards %}
+    <tr><th>num</th><th>title</th><th>writer</th></tr>
+    {% for b in boards %}
     <tr><td>{{b.num}}</td><td>{{b.title}}</td><td>{{b.writer}}</td></tr>
-  {% endfor %}
-
+    {% endfor %}
 </table>
 </body>
 </html>
