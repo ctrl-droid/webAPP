@@ -48,19 +48,76 @@ class BoardDao:
         return boards
 
     def selectByNum(self, num):
-        pass
+        self.connect()
+        cur = self.conn.cursor()
+        sql = 'select * from board where num=%s'
+        vals = (num,)
+        cur.execute(sql, vals)  # 검색 결과는 실행한 cur객체에 담긴다
+        row = cur.fetchone()  # 검색된 결과에서 한줄 팻치. 만약 검색된 결과 없으면 None반환
+        self.disconnect()
+        if row != None:  # 검색된 결과가 있으면 각 컬럼의 값을 꺼내라
+            num = row[0]
+            writer = row[1]
+            w_date = row[2]
+            title = row[3]
+            content = row[4]
+
+            b = Board(num, writer, w_date, title, content)
+            return b
 
     def selectByWriter(self, writer):
-        pass
+        self.connect()
+        cur = self.conn.cursor()
+        sql = 'select * from board where writer=%s'
+        vals = (writer,)
+        cur.execute(sql, vals)  # 검색 결과는 실행한 cur객체에 담긴다
+        row = cur.fetchone()  # 검색된 결과에서 한줄 팻치. 만약 검색된 결과 없으면 None반환
+        self.disconnect()
+        if row != None:  # 검색된 결과가 있으면 각 컬럼의 값을 꺼내라
+            num = row[0]
+            writer = row[1]
+            w_date = row[2]
+            title = row[3]
+            content = row[4]
+
+            b = Board(num, writer, w_date, title, content)
+            return b
 
     def selectByTitle(self, title):
-        pass
+        self.connect()
+        cur = self.conn.cursor()
+        sql = 'select * from board where title=%s'
+        vals = (title,)
+        cur.execute(sql, vals)  # 검색 결과는 실행한 cur객체에 담긴다
+        row = cur.fetchone()  # 검색된 결과에서 한줄 팻치. 만약 검색된 결과 없으면 None반환
+        self.disconnect()
+        if row != None:  # 검색된 결과가 있으면 각 컬럼의 값을 꺼내라
+            num = row[0]
+            writer = row[1]
+            w_date = row[2]
+            title = row[3]
+            content = row[4]
+
+            b = Board(num, writer, w_date, title, content)
+            return b
 
     def update(self, board):
-        pass
+        self.connect()
+        cur = self.conn.cursor()
+        sql = 'update board set title=%s, content=%s where num=%s'
+        vals = (board.title, board.content, board.num)
+        cur.execute(sql, vals)
+        self.conn.commit()
+        self.disconnect()
 
     def delete(self, num):
-        pass
+        self.connect()
+        cur = self.conn.cursor()
+        sql = 'delete from board where num=%s'
+        vals = (num,)
+        cur.execute(sql, vals)
+        self.conn.commit()
+        self.disconnect()
 
 class BoardService:
     def __init__(self):
@@ -71,4 +128,20 @@ class BoardService:
 
     def getAll(self):
         return self.dao.selectAll()
+
+    def getNum(self, num):
+        return self.dao.selectByNum(num)
+
+    def getWriter(self, writer):
+        return self.dao.selectByWriter(writer)
+
+    def getTitle(self, title):
+        return self.dao.selectByTitle(title)
+
+    def editBoard(self, board):#수정할 id와 새 pwd 받아서 db에서 update
+        self.dao.update(board)
+
+    def delBoard(self, num):#삭제할 id받아서 db에서 delete
+        self.dao.delete(num)
+
 

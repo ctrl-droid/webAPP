@@ -14,6 +14,5 @@ def root():
     return render_template('index.html')
 
 
-
 if __name__ == '__main__':
-    app.run()#flask 서버 실행
+    app.run(debug=True)#flask 서버 실행

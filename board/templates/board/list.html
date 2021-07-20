@@ -10,7 +10,9 @@
 <table border="1">
     <tr><th>num</th><th>title</th><th>writer</th></tr>
     {% for b in boards %}
-    <tr><td>{{b.num}}</td><td>{{b.title}}</td><td>{{b.writer}}</td></tr>
+    <tr><td>{{b.num}}</td>
+        <td><a href="/board/edit?num={{b.num}}">{{b.title}}</a></td>
+        <td>{{b.writer}}</td></tr>
     {% endfor %}
 </table>
 </body>
