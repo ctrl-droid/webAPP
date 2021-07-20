@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 import model
 
 app = Flask(__name__)
 mem_service = model.MemService()
+app.secret_key = 'affdasdf'
+
 
 @app.route('/')
 def home():
@@ -14,11 +16,28 @@ def login_form():
 
 @app.route('/Member/login', methods=['POST'])
 def login():
+    msg = ''   #로그인 상태 메시지 저장
+    path = 'member/login.html'   #처리 완료 후 이동할 페이지의 경로
+    #로그인 폼에서 입력 값 받음
     id = request.form['id']
     pwd = request.form['pwd']
-    m = model.MemberVo(id=id, pwd=pwd)
-    mem_service.getMem(id)
-    return render_template('member/login.html', id=id)
+    #입력받은 id로 검색
+    m = mem_service.getMem(id)
+    if m == None:
+        msg = '없는 아이디'
+    else:
+        if pwd == m.pwd:
+            session['id']=id  #로그아웃할떄까지 유지해야하는 정보를 저장
+            path = 'index.html'
+            msg = '로그인 성공'
+        else:
+            msg ='패스워드 불일치'
+    return render_template(path, msg=msg)
+
+@app.route('/Member/logout')
+def logout():
+    if 'id' in session:  #세션에서 id라는 키가 있냐?
+        session.pop('id', None)   #세션에서 id키 삭제제    return redirect('/')
 
 @app.route('/Member/add')
 def add_form():
