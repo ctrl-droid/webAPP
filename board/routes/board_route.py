@@ -22,7 +22,19 @@ def add():
 @bp.route('/list')
 def list():
     boards = boardService.getAll()
-    return render_template('board/list.html', boards = boards)
+    return render_template('board/list.html', boards=boards)
+
+@bp.route('/getbywriter',methods=['POST'])
+def getwriter():
+    writer = request.form['writer']
+    boards = boardService.getWriter(writer)
+    return render_template('board/list.html', boards=boards)
+
+@bp.route('/getbytitle', methods=['POST'])
+def gettitle():
+    title = request.form['title']
+    boards = boardService.getTitle(title)
+    return render_template('board/list.html', boards=boards)
 
 @bp.route('/edit')
 def edit_form():

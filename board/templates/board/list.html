@@ -14,6 +14,16 @@
         <td><a href="/board/edit?num={{b.num}}">{{b.title}}</a></td>
         <td>{{b.writer}}</td></tr>
     {% endfor %}
-</table>
+</table><br>
+
+<form action="/board/getbywriter" method="post">
+    검색할 글의 작성자 아이디: <input type="text" name="writer">
+    <input type="submit" value="검색">
+</form><br>
+
+<form action="/board/getbytitle" method="post">
+    제목으로 검색: <input type="text" name="title">
+    <input type="submit" value="검색">
+</form><br>
 </body>
 </html>

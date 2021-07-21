@@ -72,20 +72,21 @@ class BoardDao:
         vals = (writer, )
         cur.execute(sql, vals)
         boards = []
-        for fow in cur:
-            boards.append(Board(Board(row[0], row[1], row[2], row[3], row[4])))
+        for row in cur:
+            boards.append(Board(row[0], row[1], row[2], row[3], row[4]))
         self.disconnect()
         return boards
 
     def selectByTitle(self, title):
         self.connect()
         cur = self.conn.cursor()
-        sql = 'select * from board where title like=%s order by num desc'
+        title = '%'+title+'%'
+        sql = 'select * from board where title like %s order by num desc'
         vals = (title,)
         cur.execute(sql, vals)
         boards = []
-        for fow in cur:
-            boards.append(Board(Board(row[0], row[1], row[2], row[3], row[4])))
+        for row in cur:
+            boards.append(Board(row[0], row[1], row[2], row[3], row[4]))
         self.disconnect()
         return boards
 
