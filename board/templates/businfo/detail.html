@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3>버스 노선 {{b.busRouteId}}의 상세 정보</h3>
+<table border="1">
+    <tr><th>노선명</th><td>{{b.busRouteNm}}</td></tr>
+    <tr><th>기점</th><td>{{b.stStationNm}}</td></tr>
+    <tr><th>종점</th><td>{{b.edStationNm}}</td></tr>
+    <tr><th>배차시간</th><td>{{b.term}}</td></tr>
+    <tr><th>첫차시간</th><td>{{b.firstBusTm}}</td></tr>
+    <tr><th>막차시간</th><td>{{b.lastBusTm}}</td></tr>
+    <tr><th>운수회사명</th><td>{{b.corpNm}}</td></tr>
+</table><br>
+<h4>이 노선의 정거장 정보</h4>
+<table border="1">
+    <tr><th>순번</th><th>정거장명</th><th>arsId</th></tr>
+    {% for s in stations %}
+    <tr>
+        <td>{{s.seq}}</td>
+        <td>{{s.stationNm}}</td>
+        <td>{{s.arsId}}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
