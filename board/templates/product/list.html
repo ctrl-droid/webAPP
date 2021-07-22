@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3>제품목록</h3>
+<a href="/product/add">상품등록</a><br>
+<table border="1">
+  <tr><th>번호</th><th>이름</th><th>가격</th><th>수량</th><th>이미지</th></tr>
+{% for p in prods %}
+  <tr>
+    <td>{{p.num}}</td>
+    <td><a href="/product/get?num={{p.num}}">{{p.name}}</a></td>
+    <td>{{p.price}}</td>
+    <td>{{p.amount}}</td>
+    <td><img src="{{p.img_path}}" style="width:150px; height:150px"/></td>
+  </tr>
+{% endfor %}
+</table>
+</body>
+</html>

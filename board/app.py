@@ -2,6 +2,8 @@ from flask import Flask, request, render_template
 import routes.mem_route as rm
 import routes.board_route as rb
 import routes.businfo_route as rbus
+import routes.test_route as rtest
+import routes.product_route as rprod
 
 app = Flask(__name__)
 app.secret_key = 'affdasdf'
@@ -10,6 +12,8 @@ app.secret_key = 'affdasdf'
 app.register_blueprint(rm.bp)
 app.register_blueprint(rb.bp)
 app.register_blueprint(rbus.bp)
+app.register_blueprint(rtest.bp)
+app.register_blueprint(rprod.bp)
 
 @app.route('/')
 def root():
