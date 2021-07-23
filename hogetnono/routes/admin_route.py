@@ -8,6 +8,10 @@ bp = Blueprint('admin', __name__, url_prefix='/admin')  #url 생성기
 aptinfoService = ai.AptinfoService()
 transactionService = ts.TransactionService()
 
+@bp.route('/')
+def home():
+    return render_template('index.html')
+
 @bp.route('/add')
 def add_form():
     transactionService.getTransactionAPI('202001')
