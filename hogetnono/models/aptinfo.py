@@ -29,6 +29,17 @@ class AptinfoDao:
         self.conn.commit()
         self.disconnect()
 
+    def selectAll(self):
+        self.connect()
+        cur = self.conn.cursor()
+        sql = 'select * from aptinfo'
+        cur.execute(sql)
+        aptinfos = []
+        for row in cur:
+            aptinfos.append(Aptinfo(row[0], row[1], row[2]))
+        self.disconnect()
+        return aptinfos
+
     def selectBysn(self, sn):
         self.connect()
         cur = self.conn.cursor()
@@ -59,3 +70,6 @@ class AptinfoService:
 
     def addAptinfo(self, aptinfo):
         self.dao.insert(aptinfo)
+
+    def getAllAptinfo(self):
+        return self.dao.selectAll()

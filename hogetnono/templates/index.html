@@ -9,6 +9,7 @@
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
+        <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
         <link href="/static/css/styles.css" rel="stylesheet" />
     </head>
     <body>
@@ -21,8 +22,12 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>
+                        {% if 'id' in session %}
+                            <li class="nav-item"><a class="nav-link" href="/member/get">회원정보</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/member/logout">로그아웃</a></li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link" href="/member/login">로그인</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -31,180 +36,16 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-lg-8">
-
                     <!-- Post content-->
-                    <article>
-                        <!-- Post header-->
-                        <header class="mb-4">
-                            <!-- Post title-->
-                            <h1 class="fw-bolder mb-1">Welcome to Blog Post!</h1>
-                            <!-- Post meta content-->
-                            <div class="text-muted fst-italic mb-2">Posted on January 1, 2021 by Start Bootstrap</div>
-                            <!-- Post categories-->
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
-                        </header>
-                        <!-- Preview image figure-->
-                        <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
-
-	<div id="map" style="width:100%;height:500px;"></div>
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=774d098897bc6b61a21ab2eb4c4ef2a3&libraries=services,clusterer,drawing"></script>
-	<script>
-		var container = document.getElementById('map');
-		var options = {
-			center: new kakao.maps.LatLng(33.450701, 126.570667),
-			level: 3
-		};
-		var coords = 0;
-		var map = new kakao.maps.Map(container, options);
-		var geocoder = new kakao.maps.services.Geocoder();
-		// 주소-좌표 변환 객체를 생성합니다
-        var geocoder = new kakao.maps.services.Geocoder();
-
-// 주소로 좌표를 검색합니다
-geocoder.addressSearch('서울 서초구 서초대로46길 42', function(result, status) {
-
-    // 정상적으로 검색이 완료됐으면
-     if (status === kakao.maps.services.Status.OK) {
-
-        coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-        // 결과값으로 받은 위치를 마커로 표시합니다
-        var marker = new kakao.maps.Marker({
-            map: map,
-             title: '타이틀',
-            address:'주소표시',
-            position: coords
-        });
-        var customOverlay = new kakao.maps.CustomOverlay({
-			map: map,
-			content: '<div style="padding:0 5px;background:#fff;">실거래가</div>',
-			position: coords, // 커스텀 오버레이를 표시할 좌표
-			xAnchor: 0.5, // 컨텐츠의 x 위치
-			yAnchor: 0 // 컨텐츠의 y 위치
-		});
-// 지도를 표시하는 div 크기를 변경하는 함수입니다
-function resizeMap() {
-    var mapContainer = document.getElementById('map');
-    mapContainer.style.width = '650px';
-    mapContainer.style.height = '650px';
-}
-
-function relayout() {
-
-    // 지도를 표시하는 div 크기를 변경한 이후 지도가 정상적으로 표출되지 않을 수도 있습니다
-    // 크기를 변경한 이후에는 반드시  map.relayout 함수를 호출해야 합니다
-    // window의 resize 이벤트에 의한 크기변경은 map.relayout 함수가 자동으로 호출됩니다
-    map.relayout();
-}
-
-
-<!--        중심이동함수 정의-->
-        function setCenter() {
-    // 이동할 위도 경도 위치를 생성합니다
-    var moveLatLon = coords;
-
-    // 지도 중심을 이동 시킵니다
-    map.setCenter(coords);
-}
-        kakao.maps.event.addListener(marker, 'click', function() {
-		    setCenter();
-<!--		    alert('마커를 클릭했습니다!');-->
-		});
-
-<!--        // 인포윈도우로 장소에 대한 설명을 표시합니다-->
-<!--        var infowindow = new kakao.maps.InfoWindow({-->
-<!--            content: '<div style="width:150px;text-align:center;padding:6px 0;">coords</div>'-->
-<!--        });-->
-<!--        infowindow.open(map, marker);-->
-
-<!--마우스 이벤트 마커위로 올라오면 글 보이게-->
-// 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
-var iwContent = '<div style="padding:5px;">아파트 이름 , 주소</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-
-// 인포윈도우를 생성합니다
-var infowindow = new kakao.maps.InfoWindow({
-    content : iwContent
-});
-// 마커에 마우스오버 이벤트를 등록합니다
-kakao.maps.event.addListener(marker, 'mouseover', function() {
-  // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
-    infowindow.open(map, marker);
-});
-
-// 마커에 마우스아웃 이벤트를 등록합니다
-kakao.maps.event.addListener(marker, 'mouseout', function() {
-    // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
-    infowindow.close();
-});
-
-        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        map.setCenter(coords);
-    }
-
-
-});
-
-
-
-	</script>
-
-
-
-
-                        <!-- Post content-->
-                        <section class="mb-5">
-                            <p class="fs-5 mb-4">Science is an enterprise that should be cherished as an activity of the free human mind. Because it transforms who we are, how we live, and it gives us an understanding of our place in the universe.</p>
-                            <p class="fs-5 mb-4">The universe is large and old, and the ingredients for life as we know it are everywhere, so there's no reason to think that Earth would be unique in that regard. Whether of not the life became intelligent is a different question, and we'll see if we find that.</p>
-                            <p class="fs-5 mb-4">If you get asteroids about a kilometer in size, those are large enough and carry enough energy into our system to disrupt transportation, communication, the food chains, and that can be a really bad day on Earth.</p>
-                            <h2 class="fw-bolder mb-4 mt-5">I have odd cosmic thoughts every day</h2>
-                            <p class="fs-5 mb-4">For me, the most fascinating interface is Twitter. I have odd cosmic thoughts every day and I realized I could hold them to myself or share them with people who might be interested.</p>
-                            <p class="fs-5 mb-4">Venus has a runaway greenhouse effect. I kind of want to know what happened there because we're twirling knobs here on Earth without knowing the consequences of it. Mars once had running water. It's bone dry today. Something bad happened there as well.</p>
-                        </section>
-                    </article>
-                    <!-- Comments section-->
-                    <section class="mb-5">
-                        <div class="card bg-light">
-                            <div class="card-body">
-
-                                <!-- Comment form-->
-                                <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
-                                <!-- Comment with nested comments-->
-                                <div class="d-flex mb-4">
-                                    <!-- Parent comment-->
-                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                    <div class="ms-3">
-                                        <div class="fw-bold">Commenter Name</div>
-                                        If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
-                                        <!-- Child comment 1-->
-                                        <div class="d-flex mt-4">
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                            <div class="ms-3">
-                                                <div class="fw-bold">Commenter Name</div>
-                                                And under those conditions, you cannot establish a capital-market evaluation of that enterprise. You can't get investors.
-                                            </div>
-                                        </div>
-                                        <!-- Child comment 2-->
-                                        <div class="d-flex mt-4">
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                            <div class="ms-3">
-                                                <div class="fw-bold">Commenter Name</div>
-                                                When you put money directly to a problem, it makes a good headline.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Single comment-->
-                                <div class="d-flex">
-                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                    <div class="ms-3">
-                                        <div class="fw-bold">Commenter Name</div>
-                                        When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                    <!--  <article> -->
+<!--                    <table border="1">-->
+<!--                        <tr><th>SN</th><th>NAME</th><th>address</th></tr>-->
+<!--                        {% for a in aptinfos %}-->
+<!--                            <tr><td>{{a.sn}}</td><td>{{a.name}}</td><td>{{a.address}}</td></tr>-->
+<!--                        {% endfor %}-->
+<!--                    </table>-->
+                    <div id="map" class ="clo-sm-8" style="width:100%;height:100%;"></div>
+<!--                     </article> -->
                 </div>
                 <!-- Side widgets-->
                 <div class="col-lg-4">
@@ -214,7 +55,9 @@ kakao.maps.event.addListener(marker, 'mouseout', function() {
                         <div class="card-body">
                             <div class="input-group">
                                 <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                                <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                                <button class="btn btn-primary" id="button-search" type="button">Go!</button><br>
+                                <button class="btn btn-primary" id="button-search" type="button" onclick="setBounds()"
+>범위설정</button>
                             </div>
                         </div>
                     </div>
@@ -225,7 +68,7 @@ kakao.maps.event.addListener(marker, 'mouseout', function() {
                             <div class="row">
                                 <div class="col-sm-6">
                                     <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">Web Design</a></li>
+                                        <li><a href="/board/list?sn=강남대로0032400000">아파트 게시판</a></li>
                                         <li><a href="#!">HTML</a></li>
                                         <li><a href="#!">Freebies</a></li>
                                     </ul>
@@ -255,7 +98,48 @@ kakao.maps.event.addListener(marker, 'mouseout', function() {
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=774d098897bc6b61a21ab2eb4c4ef2a3&libraries=services,clusterer,drawing"></script>
         <script src="/static/js/scripts.js"></script>
+        <script>
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                mapOption = {
+                    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+                    level: 3 // 지도의 확대 레벨
+                };
 
+            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+            // 주소로 좌표를 검색합니다
+            var geocoder = new kakao.maps.services.Geocoder();
+            var bounds = new kakao.maps.LatLngBounds();
+
+            {% for a in aptinfos %}
+                getGPS('{{a.name}}','{{a.address}}');
+            {% endfor %}
+
+            function getGPS(name, address){
+                geocoder.addressSearch(address, function(result, status) {
+                     // 정상적으로 검색이 완료됐으면
+                     if (status === kakao.maps.services.Status.OK) {
+                        coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                        // 결과값으로 받은 위치를 마커로 표시합니다
+                        var marker = new kakao.maps.Marker({
+                            map: map,
+                             title: name,
+                            address: address,
+                            position: coords
+                        });
+                        bounds.extend(coords);
+                     }
+                });
+            }
+
+            function setBounds() {
+                // LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
+                // 이때 지도의 중심좌표와 레벨이 변경될 수 있습니다
+                map.setBounds(bounds);
+            }
+        </script>
     </body>
 </html>

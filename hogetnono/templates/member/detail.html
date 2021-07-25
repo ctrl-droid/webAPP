@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function edit(id){
+            location.href='/member/edit?id=' + id;
+        }
+        function del(id){
+            flag=confirm('정말 탈퇴 하시겠습니까?')
+            if(flag){
+                location.href='/member/del';
+            }else{
+                alert('탈퇴가 취소 되었습니다')
+            }
+        }
+    </script>
+</head>
+<body>
+<h3>회원정보</h3>
+    <table border="1">
+        <tr><th>아이디</th><td>{{member.id}}</td></tr>
+        <tr><th>패스워드</th><td>{{member.pwd}}</td></tr>
+        <tr><th>이름</th><td>{{member.name}}</td></tr>
+        <tr><th>전화번호</th><td>{{member.tel}}</td></tr>
+        <tr><td colspan="2">
+            <input type="button" value="수정" onClick="edit('{{member.id}}')">
+            <input type="button" value="탈퇴" onClick="del('{{member.id}}')">
+            <input type="button" value="첫페이지" onclick="location.href='/'"></td>
+        </tr>
+    </table>
+</body>
+</html>

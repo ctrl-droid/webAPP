@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3>게시글 리스트</h3>
+<a href="/board/add?sn={{sn}}">게시글 작성</a>
+{% for b in boards %}
+<table border="1">
+    <tr><td>{{b.member_id}}</td><td>작성일</td></tr>
+    <tr><td colspan="2">{{b.title}}</td></tr>
+    <tr><td colspan="2">{{b.content}}</td></tr>
+</table>
+{% endfor %}
+
+<form action="/board/get_member_id" method="post">
+    검색할 글의 작성자 아이디:<input type="text" name="member_id">
+    <input type="submit" value="검색">
+</form><br/>
+
+<form action="/board/get_content" method="post">
+    내용으로 검색:<input type="text" name="content">
+    <input type="submit" value="검색">
+</form><br/>
+
+<form action="/board/get_title" method="post">
+    제목으로 검색:<input type="text" name="title">
+    <input type="submit" value="검색">
+</form><br/>
+
+</body>
+</html>

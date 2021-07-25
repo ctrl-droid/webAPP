@@ -1,6 +1,7 @@
 #board와 관련된 vo, dao, service
 import pymysql
 
+
 class Board:
     def __init__(self, num=None, writer=None, w_date=None, title=None, content=None):
         self.num = num
