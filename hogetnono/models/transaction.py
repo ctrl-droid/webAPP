@@ -36,6 +36,18 @@ class TransactionDao:
         self.conn.commit()
         self.disconnect()
 
+    def selectBySn(self, sn):
+        self.connect()
+        cur = self.conn.cursor()
+        sql = 'select * from transaction where aptinfo_sn=%s'
+        vals = (sn,)
+        cur.execute(sql, vals)
+        transactions = []
+        for row in cur:
+            transactions.append(Transaction(row[0], row[1], row[2], row[3], row[4], row[5]))
+        self.disconnect()
+        return transactions
+
 class TransactionService:
     def __init__(self):
         self.TSdao = TransactionDao()
@@ -44,15 +56,15 @@ class TransactionService:
         self.url = 'http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev'
 
     # 공공 API에 입력한 URL, 파라미터, 파라미터 값의 결과를 bs 형태로 반환한다.
-    def getRequestsByParam(self, deal_ymd):
+    def getRequestsByParam(self, lawd_cd, deal_ymd):
         request_URL = self.url
-        request_param = {'serviceKey': self.serviceKey, 'pageNo': '1', 'numOfRows':'500', 'LAWD_CD':'11680', 'DEAL_YMD':deal_ymd}
+        request_param = {'serviceKey': self.serviceKey, 'pageNo': '1', 'numOfRows':'700', 'LAWD_CD':lawd_cd, 'DEAL_YMD':deal_ymd}
         html = requests.get(request_URL, params=request_param).text.encode('utf-8')
         content = BeautifulSoup(html, 'lxml-xml')
         return content
 
-    def getTransactionAPI(self, deal_ymd):
-        content = self.getRequestsByParam(deal_ymd)
+    def getTransactionAPI(self, lawd_cd, deal_ymd):
+        content = self.getRequestsByParam(lawd_cd, deal_ymd)
         if content.find('resultCode').get_text() == '00':
             itemList = content.find_all('item')
             for item in itemList:
@@ -93,9 +105,9 @@ class TransactionService:
                 floor = item.find('층').get_text()
 
                 # aptinfo 넣는곳
-                aptinfo = self.AIdao.selectBysn(aptinfo_sn)
+                aptinfo = self.AIdao.selectBySn(aptinfo_sn)
                 if aptinfo == None:
-                    self.AIdao.insert(ai.Aptinfo(sn=aptinfo_sn, name=name, address=add))
+                    self.AIdao.insert(ai.Aptinfo(sn=aptinfo_sn, name=name, address=add, location_code=lawd_cd))
 
                 # transaction 넣는곳
                 self.TSdao.insert(Transaction(amount=amount, date=date, area=area, floor=floor, aptinfo_sn=aptinfo_sn))
@@ -103,3 +115,6 @@ class TransactionService:
         else:
             print('대상 없음')
             return None
+
+    def getTransactionsBySn(self, sn):
+        return self.TSdao.selectBySn(sn)

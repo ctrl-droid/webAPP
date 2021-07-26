@@ -43,6 +43,17 @@ class MemberDao:
             mem = Member(row[0],row[1],row[2],row[3])
             return mem
 
+    def selectAll(self):
+        self.connect()
+        cur = self.conn.cursor()
+        sql = 'select * from member'
+        cur.execute(sql)
+        mems = []  # 검색된 모든 값 저장.
+        for row in cur:
+            mems.append(Member(row[0], row[1], row[2], row[3]))
+        self.disconnect()
+        return mems
+
     def edit(self, mem):
         self.connect()
         cur = self.conn.cursor()
@@ -77,3 +88,6 @@ class MemberService:
 
     def deleteMember(self, id):
         self.dao.delete(id)
+
+    def getAllMember(self):
+        return self.dao.selectAll()
