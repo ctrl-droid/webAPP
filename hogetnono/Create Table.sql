@@ -15,13 +15,30 @@ CREATE SCHEMA IF NOT EXISTS `hogetnono` DEFAULT CHARACTER SET utf8 ;
 USE `hogetnono` ;
 
 -- -----------------------------------------------------
+-- Table `hogetnono`.`location`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `hogetnono`.`location` (
+  `code` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`code`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `hogetnono`.`APTinfo`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `hogetnono`.`APTinfo` (
   `SN` VARCHAR(50) NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `address` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`SN`))
+  `location_code` INT NOT NULL,
+  PRIMARY KEY (`SN`),
+  INDEX `fk_APTinfo_location1_idx` (`location_code` ASC) VISIBLE,
+  CONSTRAINT `fk_APTinfo_location1`
+    FOREIGN KEY (`location_code`)
+    REFERENCES `hogetnono`.`location` (`code`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 

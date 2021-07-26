@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+<body>
+    <p id="example">AJAX</p>
+    <input type="text" id="id1" placeholder="id">
+    <input type="text" id="password1" placeholder="password">
+    <input type="text" id="email1" placeholder="email">
+    <input type="button" id="execute" value="execute">
+    <div id="testchange">
+
+    </div>
+    <script>
+        $('#execute').click(function(){ // id를 찾아서 처리 할때는 다음과 같은 방식으로 처리한다.
+            var id = $('#id1').val();
+            var password = $('#password1').val();
+            var email = $('#email1').val();
+
+            var postdata = {'id':id, 'password':password, 'email':email}// 데이터를 서버로 전달시 JSON 방식으로 전달
+            $.ajax({
+                type: 'POST',
+                url: '/ajax', // '{{url_for("ajax")}}' 이렇게 요청하면 함수에 대한 URL을 찾아준다.
+                data: JSON.stringify(postdata),
+                contentType: "application/json",
+                success: function(data){
+                    alert('성공! 데이터 값:' + data.result2['id']+" " + data.result2['password']+ " " + data.result2['email'])
+                    var htmlCode = '';
+                    htmlCode += '<input type="text" id="success" value="성공!">'
+                    $('#testchange').append(htmlCode);
+                },
+                error: function(request, status, error){
+                    alert('ajax 통신 실패')
+                    alert(error);
+                }
+            })
+        })
+    </script>
+</body>
+</html>

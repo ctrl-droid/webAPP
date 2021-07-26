@@ -5,28 +5,30 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title> Hoget NONO </title>
+        <title>Blog Post - Start Bootstrap Template</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
         <link href="/static/css/styles.css" rel="stylesheet" />
+        <!-- jquery -->
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     </head>
     <body>
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="#!">호겟 NoNO</a>
+                <a class="navbar-brand" href="#!">HogetNONO</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin">관리자</a></li>
                         {% if 'id' in session %}
-                            <li class="nav-item"><a class="nav-link" href="/member/get">info</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/member/logout">logout</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/member/get">회원정보</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/member/logout">로그아웃</a></li>
                         {% else %}
-                            <li class="nav-item"><a class="nav-link" href="/member/login">login</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/member/login">로그인</a></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -44,54 +46,80 @@
 <!--                            <tr><td>{{a.sn}}</td><td>{{a.name}}</td><td>{{a.address}}</td></tr>-->
 <!--                        {% endfor %}-->
 <!--                    </table>-->
-                    <div id="map" class ="clo-sm-8" style="width:100%;height:100%;"></div>
+                    <div id="map" class ="clo-sm-8" style="width:100%;height:90%;"></div>
 <!--                     </article> -->
                 </div>
                 <!-- Side widgets-->
                 <div class="col-lg-4">
                     <!-- Search widget-->
                     <div class="card mb-4">
-                        <div class="card-header">Search</div>
+                        <div class="card-header"><b>아파트 검색</b></div>
                         <div class="card-body">
                             <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                                <button class="btn btn-primary" id="button-search" type="button">Go!</button><br>
-                                <button class="btn btn-primary" id="button-search" type="button" onclick="setBounds()"
->범위설정</button>
+                                <input class="form-control" id="apt_search_txt" type="text" placeholder="아파트 이름을 검색해 주세요..." aria-label="아파트 이름을 검색해 주세요..." aria-describedby="button-search" />
+                                <button class="btn btn-primary" id="apt_search_but" type="button">Go!</button>
+                            </div><br>
+
+                            <div class="card mb-auto">
+                                <div class="card-header">지역</div>
+                                <div class="card-body">
+                                    {% if lols == None %}
+                                        등록된 지역 정보가 없습니다.
+                                    {% else %}
+                                        {% for l in lols %}
+                                            <button class="btn btn-primary" id="button-search" type="button" onclick="setBounds()">{{l.name}}</button>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Categories widget-->
-                    <div class="card mb-4">
-                        <div class="card-header">Categories</div>
+                    <button class="btn btn-secondary" id="aptSearchResult_tab" type="button">검색 결과</button>
+                    <button class="btn btn-secondary" id="aptInfo_tab" type="button">아파트</button>
+                    <!-- 아파트 검색 결과  -->
+                    <div class="card mb-4" id="aptSearchResult_div">
+                        <div class="card-header" id="aptSearchResult_title">아파트 검색 결과</div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li><a href="/board/list?sn=강남대로0032400000">아파트 게시판</a></li>
-                                        <li><a href="#!">HTML</a></li>
-                                        <li><a href="#!">Freebies</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">JavaScript</a></li>
-                                        <li><a href="#!">CSS</a></li>
-                                        <li><a href="#!">Tutorials</a></li>
-                                    </ul>
-                                </div>
+                            <table id="aptSearchResult_table" class="table table-striped table-hover">
+                                <thead>
+                                    <tr><th>아파트</th></tr>
+                                </thead>
+                                <tbody id="aptSearchResult_tbody">
+                                    <tr><td>검색 결과가 없습니다.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 선택된 아파트 상세 내용  -->
+                    <div class="card mb-4" id="aptInfo_div" style="display:none">
+                        <center><b><div class="card-header" id="aptInfo_title">아파트</div></b></center>
+                        <div class="card-body" id="aptInfo_body">
+                            <div id="aptInfo_content">
+                                <center>아파트가 선택되지 않았습니다.</center>
                             </div>
                         </div>
                     </div>
-                    <!-- Side widget-->
+
+                    <!-- 부동산 뉴스 -->
                     <div class="card mb-4">
-                        <div class="card-header">Side Widget</div>
-                        <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
+                        <div class="card-header"><b>부동산 뉴스</b></div>
+                        <div class="card-body">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr><th>111</th><th>222</th><th>333</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>a</td><td>b</td><td>c</td></tr>
+                                    <tr><td>a</td><td>b</td><td>c</td></tr>
+                                    <tr><td>a</td><td>b</td><td>c</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
@@ -99,12 +127,14 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=774d098897bc6b61a21ab2eb4c4ef2a3&libraries=services,clusterer,drawing"></script>
         <script src="/static/js/scripts.js"></script>
+
+        <!-- 카카오 맵 JS-->
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=774d098897bc6b61a21ab2eb4c4ef2a3&libraries=services,clusterer,drawing"></script>
         <script>
             var mapContainer = document.getElementById('map'), // 지도를 표시할 div
                 mapOption = {
-                    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+                    center: new kakao.maps.LatLng(37.56648949810302, 126.97795671261468), // 지도의 중심좌표
                     level: 3 // 지도의 확대 레벨
                 };
 

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function del(num){
+             flag=confirm('정말 삭제하시겠 습니까?')
+            if(flag){
+                location.href='/board/del?num='+num
+            }else{
+                alert('취소했습니다.')
+            }
+        }
+    </script>
+</head>
+<body>
+<h3>글 정보 페이지</h3>
+<form action="/board/edit" method="post">
+<table border="1">
+        <tr><th>code</th><td><input type="text" name="code" value="{{b.code}}" readonly ></td></tr>
+        <tr><th>title</th><td><input type="text" name="title" value="{{b.title}}"></td></tr>
+        <tr><th>member_id</th><td><input type="text" name="member_id" value="{{b.member_id}}" readonly></td></tr>
+        <tr><th>date</th><td><input type="text" name="date" value="{{b.date}}" readonly></td></tr>
+        <tr><th>content</th><td><textarea name="content" rows="15" cols="45">{{b.content}}</textarea></td></tr>
+        {% if b.writer == session.id %}
+        <tr><td colspan="2">
+            <input type="submit" value="수정">
+            <input type="button" value="삭제" onclick="del('{{b.num}}')"></td></tr>
+        {% endif %}
+</table>
+    </form>
+</body>
+</html>
