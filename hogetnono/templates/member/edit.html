@@ -57,7 +57,7 @@
                         <!-- Post header-->
                         <header class="mb-4">
                             <!-- Post title-->
-                            <h1 class="fw-bolder mb-1">내 정보 수정</h1>
+                            <h1 class="fw-bolder mb-1">개인 정보 수정</h1>
                             <!-- Post meta content-->
                             <div class="text-muted fst-italic mb-2"></div>
                             <!-- Post categories-->
@@ -66,9 +66,9 @@
                         </header>
                         <!-- Post content-->
                         <div class="card mb-4">
-                            <div class="card-header"></div>
+                            <div class="card-header">개인정보관리</div>
                             <div class="card-body">
-                                <form action="/member/edit" method="post">
+                                    <form action="/member/edit" method="post">
                                     <table class="table table-striped table-hover">
                                         <tbody>
                                             <tr><th>id</th><td><input class="form-control" name="id" type="text" value="{{member.id}}" readonly/></td></tr>
@@ -78,11 +78,11 @@
                                         </tbody>
                                     </table>
                                     <div style="float:right">
-                                        <input class="btn btn-primary" type="submit" value="수정"/>
+                                        <input class="btn btn-primary" type="submit" value="수정" onclick="edit('{{member.id}}'/>
                                         <input class="btn btn-primary" type="button" value="탈퇴" onclick="del('{{member.id}}')" />
                                         <input class="btn btn-primary" type="button" value="Home" onclick="location.href='/'" />
                                     </div>
-                                </form>
+                                    </form>
                             </div>
                         </div>
                     </article>

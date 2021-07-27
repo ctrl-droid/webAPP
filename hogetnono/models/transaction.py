@@ -48,6 +48,47 @@ class TransactionDao:
         self.disconnect()
         return transactions
 
+    def selectAll(self):
+        self.connect()
+        cur = self.conn.cursor()
+        sql = 'select * from transaction'
+        cur.execute(sql)
+        apttans = []
+        for row in cur:
+            apttans.append(Transaction(row[0], row[1], row[2], row[3], row[4], row[5]))
+        self.disconnect()
+        return apttans
+
+    def selectByCode(self, code):
+        self.connect()
+        cur = self.conn.cursor()
+        sql = 'select * from transaction where code=%s'
+        vals = (code,)
+        cur.execute(sql, vals)
+        # transactions = []
+        for row in cur:
+            vo = Transaction(row[0], row[1], row[2], row[3], row[4], row[5])
+        self.disconnect()
+        return vo
+
+    def edit(self, apttrans):
+        self.connect()
+        cur = self.conn.cursor()
+        sql = 'update transaction set amount=%s, date=%s, area=%s, floor=%s, APTinfo_SN=%s  where code=%s'
+        vals = (apttrans.amount, apttrans.date, apttrans.area,apttrans.floor, apttrans.aptinfo_sn, apttrans.code)
+        cur.execute(sql, vals)
+        self.conn.commit()
+        self.disconnect()
+
+    def delete(self, code):
+        self.connect()
+        cur = self.conn.cursor()
+        sql = 'delete from transaction where code=%s'
+        vals = (code,)
+        cur.execute(sql, vals)
+        self.conn.commit()
+        self.disconnect()
+
 class TransactionService:
     def __init__(self):
         self.TSdao = TransactionDao()
@@ -118,3 +159,18 @@ class TransactionService:
 
     def getTransactionsBySn(self, sn):
         return self.TSdao.selectBySn(sn)
+
+    def getTransactionsByCode(self, code):
+        return self.TSdao.selectByCode(code)
+
+    def getAllApttrans(self):
+        return self.TSdao.selectAll()
+
+    def delApttrans(self, code):
+        self.TSdao.delete(code)
+
+    def editApttrans(self, arpttrans):
+        self.TSdao.edit(arpttrans)
+
+    def delApttrans(self, code):
+        self.TSdao.delete(code)

@@ -102,20 +102,20 @@ class BoardDao:
         self.disconnect()
         return boards
 
-    def edit(self,board):
+    def edit(self, board):
         self.connect()
         cur = self.conn.cursor()
-        sql = "update board set title=%s , content=%s where member_id=%s"
-        vals = (board.title, board.content, board.member_id)
+        sql = "update board set title=%s , content=%s where code=%s"
+        vals = (board.title, board.content, board.code)
         cur.execute(sql,vals)
         self.conn.commit()
         self.disconnect()
 
-    def delete(self, member_id):
+    def delete(self, code):
         self.connect()
         cur = self.conn.cursor()
-        sql = 'delete from board where member_id=%s'
-        vals = (member_id,)
+        sql = 'delete from board where code=%s'
+        vals = (code,)
         cur.execute(sql, vals)
         self.conn.commit()
         self.disconnect()
@@ -149,10 +149,5 @@ class BoardService:
     def board_edit(self,board):
         self.dao.edit(board)
 
-    def board_delete(self,member_id):
-        self.dao.delete(member_id)
-
-
-
-
-
+    def board_delete(self,code):
+        self.dao.delete(code)

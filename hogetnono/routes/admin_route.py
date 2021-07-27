@@ -5,12 +5,14 @@ import hogetnono.models.location as local
 import hogetnono.models.aptinfo as ai
 import hogetnono.models.transaction as ts
 import hogetnono.models.member as mem
+import hogetnono.models.board as b
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')  #url 생성기
 locationService = local.LocationService()
 aptinfoService = ai.AptinfoService()
 transactionService = ts.TransactionService()
 memService = mem.MemberService()
+boardService = b.BoardService()
 
 @bp.route('/')
 def admin():
@@ -58,11 +60,6 @@ def aptinfo_del():
     aptinfoService.delAptinfo(sn)
     return redirect('/admin/aptinfo')
 
-@bp.route('/board')
-def board():
-    return render_template('admin/admin_board.html')
-
-
 @bp.route('/member')
 def member():
     mems = memService.getAllMember()
@@ -92,7 +89,61 @@ def member_del():
     memService.deleteMember(id)
     return redirect('/admin/member')
 
+@bp.route('/board')
+def board():
+    aptinfo_sn = request.args.get('sn', '', str)
+    boards = boardService.board_selectAll()
+    return render_template('admin/admin_board.html', boards=boards, sn=aptinfo_sn)
+
+@bp.route('/board/edit')
+def board_editform():
+    code = request.args.get('code', 0, int)
+    boards = boardService.board_select_code(code)
+    return render_template('admin/admin_board_edit.html', boards=boards)
+
+@bp.route('/board/edit', methods = ['POST'])
+def board_edit():
+    title = request.form['title']
+    content = request.form['content']
+    code = request.form['code']
+    boards = b.Board(title=title, content=content, code=code)
+    boardService.board_edit(boards)
+    return redirect('/admin/board')
+
+@bp.route('/board/del')
+def board_delete():
+    print('aaa')
+    code = request.args.get('code', '', str)
+    boardService.board_delete(code)
+    return redirect('/admin/board')
 
 @bp.route('/transaction')
 def transaction():
-    return render_template('admin/admin_transaction.html')
+    apttrans = transactionService.getAllApttrans()
+    if len(apttrans) == 0:
+        apttrans = None
+
+    return render_template('admin/admin_transaction.html', apttrans=apttrans)
+
+@bp.route('/transaction/edit')
+def apttrans_editform():
+    code = request.args.get('code', '', str)
+    apttrans = transactionService.getTransactionsByCode(code)
+    return render_template('admin/admin_transaction_edit.html', apttrans=apttrans)
+
+@bp.route('/transaction/edit', methods = ['POST'])
+def apttrans_edit():
+    code = request.form['code']
+    amount = request.form['amount']
+    date = request.form['date']
+    area = request.form['area']
+    floor = request.form['floor']
+    aptinfo_sn = request.form['aptinfo_sn']
+    transactionService.editApttrans(ts.Transaction(code=code, amount=amount, date=date, area=area, floor=floor, aptinfo_sn=aptinfo_sn))
+    return redirect('/admin/transaction')
+
+@bp.route('/transaction/del')
+def apttrans_del():
+    code = request.args.get('code', '', str)
+    transactionService.delApttrans(code)
+    return redirect('/admin/transaction')

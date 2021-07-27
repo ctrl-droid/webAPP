@@ -29,6 +29,7 @@ def join_form():
 
 @bp.route('/join', methods=['POST'])
 def join():
+    print('test')
     id = request.form['id']
     pwd = request.form['pwd']
     name = request.form['name']
@@ -50,13 +51,6 @@ def get():
         member = member_service.getMember(id)
     else:
         return '로그인이 안되있습니다'
-    return render_template('member/detail.html', member=member)
-
-@bp.route('/edit')
-def edit_form():
-    id = request.args.get('id', '', str)
-    print(id)
-    member = member_service.getMember(id)
     return render_template('member/edit.html', member=member)
 
 @bp.route('/edit', methods=['POST'])

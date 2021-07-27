@@ -27,7 +27,6 @@ def root():
     lols = locationService.getAllLocation()
     if len(lols) == 0:
         lols = None
-
     news = newsService.NewsCrawler()
     return render_template('index.html', aptinfos=aptinfos, lols=lols, news=news)
 

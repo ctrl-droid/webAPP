@@ -102,7 +102,7 @@ function aptClick(sn){
                 var date = data.ts[i]['date']
                 var area = data.ts[i]['area']
                 var floor = data.ts[i]['floor']
-                htmlCode += '<tr><td>' + date + '</td><td>' + amount + '</td>';
+                htmlCode += '<tr><td>' + moment(date).format('YYYY-MM-DD') + '</td><td>' + amount + '</td>';
                 htmlCode += '<td>' + area + '</td><td>' + floor + '</td></tr>';
             }
             htmlCode += '</tbody></table></div>';
