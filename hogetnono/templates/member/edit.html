@@ -14,8 +14,8 @@
         <!-- jquery -->
         <script src="https://code.jquery.com/jquery-latest.min.js"></script>
         <script>
-            function edit(id){
-                location.href='/member/edit?id=' + id;
+            function edit(){
+                alert('수정 되었습니다');
             }
             function del(id){
                 flag=confirm('정말 탈퇴 하시겠습니까?')
@@ -57,7 +57,7 @@
                         <!-- Post header-->
                         <header class="mb-4">
                             <!-- Post title-->
-                            <h1 class="fw-bolder mb-1">개인 정보 수정</h1>
+                            <h1 class="fw-bolder mb-1">개인정보관리</h1>
                             <!-- Post meta content-->
                             <div class="text-muted fst-italic mb-2"></div>
                             <!-- Post categories-->
@@ -78,7 +78,7 @@
                                         </tbody>
                                     </table>
                                     <div style="float:right">
-                                        <input class="btn btn-primary" type="submit" value="수정" onclick="edit('{{member.id}}'/>
+                                        <input class="btn btn-primary" type="submit" value="수정" onclick="edit()"/>
                                         <input class="btn btn-primary" type="button" value="탈퇴" onclick="del('{{member.id}}')" />
                                         <input class="btn btn-primary" type="button" value="Home" onclick="location.href='/'" />
                                     </div>
