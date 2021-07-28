@@ -1,8 +1,5 @@
 # aptinfo와 관련된 vo, dao, service
 import pymysql
-import requests
-from bs4 import BeautifulSoup
-import hogetnono.models.aptinfo as ai
 
 class Transaction:
     def __init__(self, code=None, amount=None, date=None, area=None, floor=None, aptinfo_sn=None):
@@ -89,88 +86,57 @@ class TransactionDao:
         self.conn.commit()
         self.disconnect()
 
+    def selectUniqArea(self, sn):
+        self.connect()
+        cur = self.conn.cursor()
+        sql = 'select area from transaction where APTinfo_SN=%s group by area order by area'
+        vals = (sn,)
+        cur.execute(sql, vals)
+        pre_area = []
+        for row in cur:
+            pre_area.append(row[0])
+        self.disconnect()
+        return pre_area
+
+    def selectBySnAndArea(self, sn, area):
+        self.connect()
+        cur = self.conn.cursor()
+        sql = 'select * from transaction where aptinfo_sn=%s and area=%s order by date desc'
+        vals = (sn, area)
+        cur.execute(sql, vals)
+        transactions = []
+        for row in cur:
+            transactions.append(Transaction(row[0], row[1], row[2], row[3], row[4], row[5]))
+        self.disconnect()
+        return transactions
+
+
 class TransactionService:
     def __init__(self):
-        self.TSdao = TransactionDao()
-        self.AIdao = ai.AptinfoDao()
-        self.serviceKey = 'qllrU5q/Iy5IEY7QPdyk29YFEKziTWkVrdkGJEGW4bYjZF19Wpbm7P6jel3RuGrAmWWX+HcBVCxYsKFAsxsh2w=='
-        self.url = 'http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev'
-
-    # 공공 API에 입력한 URL, 파라미터, 파라미터 값의 결과를 bs 형태로 반환한다.
-    def getRequestsByParam(self, lawd_cd, deal_ymd):
-        request_URL = self.url
-        request_param = {'serviceKey': self.serviceKey, 'pageNo': '1', 'numOfRows':'700', 'LAWD_CD':lawd_cd, 'DEAL_YMD':deal_ymd}
-        html = requests.get(request_URL, params=request_param).text.encode('utf-8')
-        content = BeautifulSoup(html, 'lxml-xml')
-        return content
-
-    def getTransactionAPI(self, lawd_cd, deal_ymd):
-        content = self.getRequestsByParam(lawd_cd, deal_ymd)
-        if content.find('resultCode').get_text() == '00':
-            itemList = content.find_all('item')
-            for item in itemList:
-                # API에서 조회 후 데이터 가공
-
-                name = item.find('아파트').get_text()
-
-                add1 = item.find('도로명').get_text()
-                add2 = item.find('도로명건물본번호코드').get_text()
-                add3 = item.find('도로명건물부번호코드').get_text()
-                aptinfo_sn = add1+add2+add3
-                add3 = int(add3)
-                if add3 == 0:
-                    add3 = ''
-                else:
-                    add3 = '-' + str(add3)
-                add = add1+' '+str(int(add2))+add3
-
-                tranSN = item.find('일련번호') # 취소 매물 거를때
-                if tranSN == None:
-                    break
-
-                amount = item.find('거래금액').get_text()
-                amount = int(amount.replace(',',''))
-
-                Y = item.find('년').get_text()
-                M = item.find('월').get_text()
-                D = item.find('일').get_text()
-
-                if len(M) == 1:
-                    M = '0' + M
-                if len(D) == 1:
-                    D = '0' + D
-                date = Y + M + D
-
-                area = item.find('전용면적').get_text()
-
-                floor = item.find('층').get_text()
-
-                # aptinfo 넣는곳
-                aptinfo = self.AIdao.selectBySn(aptinfo_sn)
-                if aptinfo == None:
-                    self.AIdao.insert(ai.Aptinfo(sn=aptinfo_sn, name=name, address=add, location_code=lawd_cd))
-
-                # transaction 넣는곳
-                self.TSdao.insert(Transaction(amount=amount, date=date, area=area, floor=floor, aptinfo_sn=aptinfo_sn))
-
-        else:
-            print('대상 없음')
-            return None
+        self.dao = TransactionDao()
 
     def getTransactionsBySn(self, sn):
-        return self.TSdao.selectBySn(sn)
+        return self.dao.selectBySn(sn)
 
     def getTransactionsByCode(self, code):
-        return self.TSdao.selectByCode(code)
+        return self.dao.selectByCode(code)
 
     def getAllApttrans(self):
-        return self.TSdao.selectAll()
+        return self.dao.selectAll()
 
     def delApttrans(self, code):
-        self.TSdao.delete(code)
+        self.dao.delete(code)
 
     def editApttrans(self, arpttrans):
-        self.TSdao.edit(arpttrans)
+        self.dao.edit(arpttrans)
 
     def delApttrans(self, code):
-        self.TSdao.delete(code)
+        self.dao.delete(code)
+
+    def getUniqArea(self, sn):
+        return self.dao.selectUniqArea(sn)
+
+    def getTransactionsArea(self, sn, area):
+        return self.dao.selectBySnAndArea(sn, area)
+
+

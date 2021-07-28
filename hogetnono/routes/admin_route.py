@@ -6,6 +6,7 @@ import hogetnono.models.aptinfo as ai
 import hogetnono.models.transaction as ts
 import hogetnono.models.member as mem
 import hogetnono.models.board as b
+import hogetnono.models.apirequest as api
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')  #url 생성기
 locationService = local.LocationService()
@@ -13,13 +14,17 @@ aptinfoService = ai.AptinfoService()
 transactionService = ts.TransactionService()
 memService = mem.MemberService()
 boardService = b.BoardService()
+openApiService = api.OpenApiService()
 
 @bp.route('/')
 def admin():
-    lols = locationService.getAllLocation()
-    if len(lols) == 0:
-        lols = None
-    return render_template('admin/admin_location.html', lols=lols)
+    if 'admin' == session['id']:  # 파라미터 변조에 의한 수정 방지(파라미터에서 받는 정보로 비교X)
+        lols = locationService.getAllLocation()
+        if len(lols) == 0:
+            lols = None
+        return render_template('admin/admin_location.html', lols=lols)
+    else:
+        return '관리자만 접근 가능합니다.'
 
 @bp.route('locationadd', methods = ['POST'])
 def add_location():
@@ -27,9 +32,13 @@ def add_location():
     name = request.form['name']
     locationService.addLocation(local.Location(code=code, name=name))
     # 강남구 CODE = '11680'
-    for i in range(1, 7):
-        date = '20210' + str(i)
-        transactionService.getTransactionAPI(code, date)
+    for i in range(7, 13):
+        date = '2020' + format(i, '02')
+        openApiService.getTransactionAPI(code, date)
+    for i in range(1, 8):
+        date = '2021' + format(i, '02')
+        openApiService.getTransactionAPI(code, date)
+
     return redirect('/admin')
 
 @bp.route('/aptinfo')
@@ -103,16 +112,14 @@ def board_editform():
 
 @bp.route('/board/edit', methods = ['POST'])
 def board_edit():
-    title = request.form['title']
     content = request.form['content']
     code = request.form['code']
-    boards = b.Board(title=title, content=content, code=code)
+    boards = b.Board(content=content, code=code)
     boardService.board_edit(boards)
     return redirect('/admin/board')
 
 @bp.route('/board/del')
 def board_delete():
-    print('aaa')
     code = request.args.get('code', '', str)
     boardService.board_delete(code)
     return redirect('/admin/board')

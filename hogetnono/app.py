@@ -6,6 +6,7 @@ import routes.index_route as ir
 import hogetnono.models.aptinfo as ai
 import hogetnono.models.location as local
 import hogetnono.models.news as news
+import hogetnono.models.apirequest as api
 
 app = Flask(__name__)
 app.secret_key = 'affdasdf'
@@ -19,15 +20,15 @@ app.register_blueprint(ir.bp)
 locationService = local.LocationService()
 aptinfoService = ai.AptinfoService()
 newsService = news.NewsService()
-
+mapApiService = api.MapApiService()
 
 @app.route('/')
 def root():
-    aptinfos = aptinfoService.getAllAptinfo()
+    aptinfos = mapApiService.getAptinfo_addGPS()
+    news = newsService.NewsCrawler()
     lols = locationService.getAllLocation()
     if len(lols) == 0:
         lols = None
-    news = newsService.NewsCrawler()
     return render_template('index.html', aptinfos=aptinfos, lols=lols, news=news)
 
 if __name__ == '__main__':

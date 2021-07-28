@@ -109,8 +109,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/admin">관리자</a></li>
                         {% if 'id' in session %}
+                            {% if session.id == 'admin' %}
+                                <li class="nav-item"><a class="nav-link" href="/admin">관리자</a></li>
+                            {% endif %}
                             <li class="nav-item"><a class="nav-link" href="/member/get">회원정보</a></li>
                             <li class="nav-item"><a class="nav-link" href="/member/logout">로그아웃</a></li>
                         {% else %}

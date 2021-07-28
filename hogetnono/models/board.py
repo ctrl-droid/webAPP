@@ -1,15 +1,14 @@
 import pymysql
 class Board:
-    def __init__(self, code=None ,title=None, date=None , content=None , member_id=None, aptinfo_sn=None):
+    def __init__(self, code=None, date=None , content=None , member_id=None, aptinfo_sn=None):
         self.code = code
-        self.title = title
         self.date = date
         self.content = content
         self.member_id = member_id
         self.aptinfo_sn = aptinfo_sn
 
     def __str__(self):
-        return self.code+' / '+self.title+' / '+self.date+' / '+self.content+' / '+self.member_id+' / '+self.aptinfo_sn
+        return self.code+' / '+self.date+' / '+self.content+' / '+self.member_id+' / '+self.aptinfo_sn
 
 class BoardDao:
     def __init__(self):
@@ -24,8 +23,8 @@ class BoardDao:
     def insert(self,board):
         self.connect()
         cur = self.conn.cursor()
-        sql = "insert into board(title, date, content, member_id, aptinfo_sn) value(%s, now(), %s, %s, %s)"
-        vals = (board.title, board.content, board.member_id, board.aptinfo_sn)
+        sql = "insert into board(date, content, member_id, aptinfo_sn) value(now(), %s, %s, %s)"
+        vals = (board.content, board.member_id, board.aptinfo_sn)
         cur.execute(sql,vals)
         self.conn.commit()
         self.disconnect()
@@ -37,7 +36,7 @@ class BoardDao:
         cur.execute(sql)
         boards = []
         for row in cur:
-            boards.append(Board(row[0], row[1], row[2], row[3], row[4],row[5]))
+            boards.append(Board(row[0], row[1], row[2], row[3], row[4]))
         self.disconnect()
         return boards
 
@@ -49,7 +48,7 @@ class BoardDao:
         cur.execute(sql, vals)
         boards = []
         for row in cur:
-            boards.append(Board(row[0], row[1], row[2], row[3], row[4], row[5]))
+            boards.append(Board(row[0], row[1], row[2], row[3], row[4]))
         self.disconnect()
         return boards
 
@@ -61,10 +60,9 @@ class BoardDao:
         cur.execute(sql, vals)
         boards = []
         for row in cur:
-            boards.append(Board(row[0], row[1], row[2], row[3], row[4],row[5]))
+            boards.append(Board(row[0], row[1], row[2], row[3], row[4]))
         self.disconnect()
         return boards
-
 
     def select_member_id(self, member_id):
         self.connect()
@@ -74,39 +72,15 @@ class BoardDao:
         cur.execute(sql, vals)
         boards = []
         for row in cur:
-            boards.append(Board(row[0], row[1], row[2], row[3], row[4],row[5]))
-        self.disconnect()
-        return boards
-
-    def select_title(self, title):
-        self.connect()
-        cur = self.conn.cursor()
-        sql = "select * from board where title like %s"
-        vals = ('%'+title+'%')
-        cur.execute(sql, vals)
-        boards = []
-        for row in cur:
-            boards.append(Board(row[0], row[1], row[2], row[3], row[4],row[5]))
-        self.disconnect()
-        return boards
-
-    def select_content(self,content):
-        self.connect()
-        cur = self.conn.cursor()
-        sql = "select * from board where title content %s"
-        vals = ('%' + content + '%')
-        cur.execute(sql, vals)
-        boards = []
-        for row in cur:
-            boards.append(Board(row[0], row[1], row[2], row[3], row[4],row[5]))
+            boards.append(Board(row[0], row[1], row[2], row[3], row[4]))
         self.disconnect()
         return boards
 
     def edit(self, board):
         self.connect()
         cur = self.conn.cursor()
-        sql = "update board set title=%s , content=%s where code=%s"
-        vals = (board.title, board.content, board.code)
+        sql = "update board set content=%s where code=%s"
+        vals = (board.content, board.code)
         cur.execute(sql,vals)
         self.conn.commit()
         self.disconnect()
@@ -119,7 +93,6 @@ class BoardDao:
         cur.execute(sql, vals)
         self.conn.commit()
         self.disconnect()
-
 
 class BoardService:
     def __init__(self):
@@ -136,12 +109,6 @@ class BoardService:
 
     def board_select_member_id(self, member_id):
         return self.dao.select_member_id(member_id)
-
-    def board_select_title(self,title):
-        return self.dao.select_title(title)
-
-    def board_select_content(self,content):
-        return self.dao.select_content(content)
 
     def board_selectAll(self):
         return self.dao.selectAll()

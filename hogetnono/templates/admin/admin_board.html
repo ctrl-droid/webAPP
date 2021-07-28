@@ -61,14 +61,14 @@
                             <div class="card-body">
                             <table class="table table-striped table-hover">
                                     <thead>
-                                        <tr><th>code</th><th>title</th><th>date</th><th>content</th><th>member_id</th></tr>
+                                        <tr><th>code</th><th>date</th><th>content</th><th>member_id</th></tr>
                                     </thead>
                                     <tbody>
                                         {% if boards == None %}
                                             <tr><td colspan="4">등록된 게시글이 없습니다.</td></tr>
                                         {% else %}
                                             {% for b in boards %}
-                                                <tr onclick="detailForm('{{b.code}}')"><td>{{b.code}}</td><td>{{b.title}}</td><td>{{b.date}}</td><td>{{b.content}}</td><td>{{b.member_id}}</td></tr>
+                                                <tr onclick="detailForm('{{b.code}}')"><td>{{b.code}}</td><td>{{b.date}}</td><td>{{b.content}}</td><td>{{b.member_id}}</td></tr>
                                             {% endfor %}
                                         {% endif %}
 

@@ -1,181 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>회원 정보 관리</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
-        <link href="/static/css/styles.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <!-- jquery -->
-        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <!-- 모달 -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<style>
-body {
-	font-family: 'Varela Round', sans-serif;
-}
-.modal-login {
-	color: #636363;
-	width: 350px;
-}
-.modal-login .modal-content {
-	padding: 20px;
-	border-radius: 5px;
-	border: none;
-}
-.modal-login .modal-header {
-	border-bottom: none;
-	position: relative;
-	justify-content: center;
-}
-.modal-login h4 {
-	text-align: center;
-	font-size: 26px;
-}
-.modal-login  .form-group {
-	position: relative;
-}
-.modal-login i {
-	position: absolute;
-	left: 13px;
-	top: 11px;
-	font-size: 18px;
-}
-.modal-login .form-control {
-	padding-left: 40px;
-}
-.modal-login .form-control:focus {
-	border-color: #12b5e5;
-}
-.modal-login .form-control, .modal-login .btn {
-	min-height: 40px;
-	border-radius: 3px;
-	transition: all 0.5s;
-}
-.modal-login .close {
-	position: absolute;
-	top: -5px;
-	right: -5px;
-}
-.modal-login .forgot-link {
-	color: #12b5e5;
-	float: right;
-}
-.modal-login .btn, .modal-login .btn:active {
-	border: none;
-  	background: #12b5e5 !important;
-	line-height: normal;
-}
-.modal-login .btn:hover, .modal-login .btn:focus {
-	background: #10a3cd !important;
-}
-.modal-login .modal-footer {
-	color: #999;
-	border: none;
-	text-align: center;
-	border-radius: 5px;
-	font-size: 13px;
-	margin-top: -20px;
-	justify-content: center;
-}
-.modal-login .modal-footer a {
-	color: #12b5e5;
-}
-.trigger-btn {
-	display: inline-block;
-	margin: 100px auto;
-}
-.bottom-action {
-  	font-size: 14px;
-}
-.bottom-action input {
-  	position: relative;
-  	top: 1px;
-}
-</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
-    <body>
-            <!-- Page content-->
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-lg-8">
-                    <!-- Post content-->
-                    <article>
-                        <!-- Post header-->
-                        <header class="mb-4">
-                            <!-- Post title-->
-                            <h1 class="fw-bolder mb-1">게시글 리스트</h1>
-                            <!-- Post meta content-->
-                            <div class="text-muted fst-italic mb-2"></div>
-                            <!-- Post categories-->
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Database Update</a>
-                        </header>
-                        <div class="card mb-4">
-                            <div class="card-header">아파트이름</div>
-                                <div class="card-body"></div>
-                                        {% for b in boards %}
-                                        <table class="table table-striped table-hover">
-                                            <thead>
-                                                <tr><th>작성자</th><th>제목</th><th>내용</th><th>작성일</th></tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr><td>{{b.member_id}}</td><td>{{b.title}}</td><td>{{b.content}}</td><td>{{b.date}}</td></tr>
-                                            </tbody>
-                                        {% endfor %}
-                                        </table>
-                                        <input class="btn btn-primary" type="button" value="글쓰기" onclick="location.href='/board/add?sn={{sn}}'" />
-                                        <a href="#myModal" class="btn btn-primary" data-toggle="modal">글쓰기</a>
-                                        <div id="myModal" class="modal fade">
-                                            <div class="modal-dialog modal-login">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title">글 등록</h4>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form action="/board/add" method="post">
-                                                            <div class="form-group">
-                                                                <i class="fa fa-user"></i>
-                                                                <input type="text" name='title' class="form-control" placeholder="제목" required="required">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <i class="fa fa-user"></i>
-                                                                <input type="text" name='member_id' class="form-control" value="{{session.id}}">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <i class="fa fa-user"></i>
-                                                                <input type="text" name='content'class="form-control" placeholder="내용" required="required">
-                                                            </div>
+<body>
+<h3>게시글 리스트</h3>
+<a href="/board/add?sn={{sn}}">게시글 작성</a>
+{% for b in boards %}
+<table border="1">
+    <tr><td>{{b.member_id}}</td><td>작성일</td></tr>
+    <tr><td colspan="2">{{b.title}}</td></tr>
+    <tr><td colspan="2">{{b.content}}</td></tr>
+</table>
+{% endfor %}
 
-                                                            <div class="form-group">
-                                                                <input type="submit" class="btn btn-primary btn-block btn-lg" value="등록">
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+<form action="/board/get_member_id" method="post">
+    검색할 글의 작성자 아이디:<input type="text" name="member_id">
+    <input type="submit" value="검색">
+</form><br/>
 
-                        </div>
+<form action="/board/get_content" method="post">
+    내용으로 검색:<input type="text" name="content">
+    <input type="submit" value="검색">
+</form><br/>
 
-                    </article>
-                </div>
-            </div>
-        </div>
+<form action="/board/get_title" method="post">
+    제목으로 검색:<input type="text" name="title">
+    <input type="submit" value="검색">
+</form><br/>
 
-    </body>
+</body>
 </html>
