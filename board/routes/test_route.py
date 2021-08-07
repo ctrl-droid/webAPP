@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, session
 import matplotlib.pyplot as plt
+import os
 
 bp = Blueprint('test', __name__, url_prefix='/test')  #url 생성기
 
@@ -10,10 +11,10 @@ def graph():
 
     x = [1, 2, 3, 4]
     y = [3, 8, 5, 6]
-    fig, ax = plt.subplots()  #그래프 그릴 플랏 생성. fig=그림, ax=축
-    plt.plot(x, y)   #그래프 그림
-    fig.savefig(img_path)  #이미지 저장할 경로
-    img_path = '/' + img_path   #절대경로때문에 / 붙여줌
+    fig, _ = plt.subplots() #그래프 그릴 플랏 생성
+    plt.plot(x, y) #그래프 그림
+    fig.savefig(img_path) #그래프 이미지 파일로 저장
+    img_path = '/' + img_path
     return render_template('test/test.html', img_path=img_path)
 
 @bp.route('/upload')
@@ -25,9 +26,29 @@ def upload():
     upload_path = 'static/img/'
     f = request.files['file']
     fname = upload_path+f.filename
-    f.save(fname)   #26번 줄에서 보낸 파일을 저장하는 명령문
+    f.save(fname)
     fname = '/' + fname
     return render_template('test/test.html', img_path=fname)
+
+@bp.route('/upload2', methods=['POST'])
+def upload2():
+    upload_path = 'static/img/'
+    f = request.files['file']
+    fname = upload_path+f.filename
+    f.save(fname)
+    title = request.form['title']
+    print(title)
+
+    return '업로드 완료'
+
+@bp.route('/list')
+def list():
+    path = 'static/img/'
+    files = os.listdir(path)
+    print(files)
+    return render_template('test/list.html', files=files)
+
+
 
 
 
